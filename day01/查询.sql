@@ -88,3 +88,21 @@ select a.stu_id,stu_name,stu_course,stu_score from stuinfo a , stuscore b where 
 select stuinfo.stu_id,stu_name,stu_course,stu_score from stuinfo inner join stuscore on stuinfo.stu_id = stuscore.stu_id
 select stuinfo.stu_id,stu_name,stu_course,stu_score from stuinfo left join stuscore on stuinfo.stu_id = stuscore.stu_id
 select stuinfo.stu_id,stu_name,stu_course,stu_score from stuscore right join stuinfo on stuinfo.stu_id = stuscore.stu_id
+
+--子查询:查询中嵌套查询
+--1.作为条件出现(单行)
+select stu_name from stuinfo where stu_id = (select stu_id from stuscore where stu_course='java' and stu_score=80)
+--2.多行
+select stu_name from stuinfo where stu_id in (select stu_id from stuscore where stu_course='java')
+
+
+--作为列出现
+select *,(select stu_score from stuscore where stu_course='java' and stuinfo.stu_id = stuscore.stu_id) from stuinfo
+
+
+--作为临时表出现
+select * from stuinfo
+select * from stuscore
+
+select stu_name,stu_course,stu_score from stuinfo,(select * from stuscore where stu_score >80) score1
+where stuinfo.stu_id = score1.stu_id and stu_name like '%三%'

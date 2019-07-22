@@ -1,14 +1,25 @@
 --(1)列出至少有3个员工的部门信息
 
-	
+select COUNT(*) 员工数,DEPT.DEPTNO,dept.DNAME,dept.LOC as 人数 from emp,dept where emp.DEPTNO = dept.DEPTNO 
+group by DEPT.DEPTNO,dept.DNAME,dept.LOC having  COUNT(*) > 3
 
 --(2)列出工资比“SMITH”多的员工名称以及工资
 
+select * from emp
+
+select e2.ENAME,e2.SAL from emp e1,emp e2
+where e1.ENAME = 'smith' and e2.SAL>e1.SAL
 
 --(3)列出所有员工的姓名及其直接上级的姓名和上级的部门名称
 
- 
+select e1.ENAME,e2.ENAME,DNAME from emp e1,emp e2,dept
+ where e1.MGR = e2.EMPNO and e2.DEPTNO = dept.DEPTNO
+
+
 --(4)列出受雇日期早于其直接上级的所有员工
+
+select e1.ENAME,e1.HIREDATE,e2.ENAME,e2.HIREDATE from emp e1,emp e2
+where e1.MGR = e2.EMPNO and e1.HIREDATE<e2.HIREDATE
 
 
 --(5)列出部门名称和这些部门的员工信息，同时列出那些没有员工的部门

@@ -18,10 +18,10 @@ where dept.DEPTNO = t.DEPTNO group by dept.DEPTNO,DNAME,LOC
 select emp.JOB,min(emp.SAL) from emp
 group by JOB
 
-
+--***
 --4.列出各个部门的clerk(职员)的最低薪金。
-select emp.DEPTNO, min(t.sal) from emp,(select sal,DEPTNO from emp where JOB='clerk') t 
-where emp.DEPTNO = t.DEPTNO group by emp.DEPTNO
+select emp.DEPTNO, min(sal) from emp
+where emp.job = 'clerk' group by emp.DEPTNO
 
 --5.列出员工表中每个部门的员工数（员工数必须大于3），和部门名称
 
@@ -29,6 +29,8 @@ select 人数 , DNAME
 from (select COUNT(*) 人数,deptno  from emp group by DEPTNO) t ,dept
 where t.DEPTNO=dept.DEPTNO
 
+
+--***
 --6.找出工资比ford高的员工
 
 select emp.ENAME,emp.SAL from (select emp.SAL from emp where ENAME = 'ford') t,emp
@@ -41,6 +43,7 @@ select top 2 job,AVG(SAL)
 from emp group by JOB order by Avg(SAL) desc
 
 
+--***
 --8.查找不在部门30,且比部门30中任何一个人工资都高的员工姓名
 
 select ename from (select Max(sal) Maxsal from emp where DEPTNO=30) t ,emp 
@@ -58,19 +61,22 @@ select top 1 dept.DEPTNO,DNAME,dept.LOC,总工资,总人数
 from(select DEPTNO,SUM(SAL) 总工资,COUNT(*) 总人数 from emp group by DEPTNO) t,dept
 where dept.DEPTNO = t.DEPTNO order by 总工资 desc
 
+--***
 --11.查找出部门20和部门30中，工资最高的第1名到工资第3名的员工的员工名字，部门名字，部门所在
 
 select  ENAME,DNAME,LOC
 from dept ,( select top 3 sal,ENAME,DEPTNO from emp where DEPTNO in (20,30) order by SAL desc) t
 where t.DEPTNO = dept.DEPTNO
 
+
+--***
 --12.查找出收入（工资+奖金），下级比自己上级还高的员工编号，姓名，收入
 
 select EMPNO,ENAME,emp.SAL+COMM
 from (select sal,deptno from emp where JOB='manager') t ,emp
 where t.DEPTNO = emp.DEPTNO and emp.SAL+COMM > t.SAL
 
-
+--***
 --13.按部门统计员工数,查出员工数最多的部门中工资第1名到第3名的所有员工信息
 
 select top 3 emp.* from 
